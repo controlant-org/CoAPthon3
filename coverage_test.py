@@ -961,6 +961,7 @@ class Tests(unittest.TestCase):
         exchange3 = (req, expected)
         self.current_mid += 1
 
+        # We're not expecting a request with the time here, just checking we can set the option
         req = Request()
         req.code = defines.Codes.POST.number
         req.uri_path = path
@@ -968,7 +969,7 @@ class Tests(unittest.TestCase):
         req._mid = self.current_mid
         req.destination = self.server_address
         option = Option()
-        option.number = defines.OptionRegistry.TIME.number
+        option.number = defines.OptionRegistry.HONO_TIME.number
         req.add_option(option)
         req.payload = "test"
 
