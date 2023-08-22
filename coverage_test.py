@@ -961,7 +961,30 @@ class Tests(unittest.TestCase):
         exchange3 = (req, expected)
         self.current_mid += 1
 
-        self._test_with_client([exchange1, exchange2, exchange3])
+        # We're not expecting a request with the time here, just checking we can set the option
+        req = Request()
+        req.code = defines.Codes.POST.number
+        req.uri_path = path
+        req.type = defines.Types["CON"]
+        req._mid = self.current_mid
+        req.destination = self.server_address
+        option = Option()
+        option.number = defines.OptionRegistry.HONO_TIME.number
+        req.add_option(option)
+        req.payload = "test"
+
+        expected = Response()
+        expected.type = defines.Types["ACK"]
+        expected._mid = self.current_mid
+        expected.code = defines.Codes.CREATED.number
+        expected.token = None
+        expected.payload = None
+        expected.location_path = "storage/new_res"
+
+        exchange4 = (req, expected)
+        self.current_mid += 1
+
+        self._test_with_client([exchange1, exchange2, exchange3, exchange4])
 
     def test_long_options(self):
         """
