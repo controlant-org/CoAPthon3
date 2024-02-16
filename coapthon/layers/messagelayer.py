@@ -290,8 +290,6 @@ class MessageLayer(object):
                 transaction.completed = True
                 message.mid = transaction.response.mid
                 message.code = 0
-                # Hono uses strictEmptyMessageFormat and rejects empty messages with a token
-                # message.token = transaction.response.token
                 message.destination = transaction.response.source
 
         elif message.type == defines.Types["RST"]:

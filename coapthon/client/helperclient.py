@@ -235,16 +235,14 @@ class HelperClient(object):
                 return
             try:
                 while True:
-                    # Not checking message id due to Hono sending CON message with a different id
-                    return self.queue.get(block=True, timeout=timeout)
-                    # response = self.queue.get(block=True, timeout=timeout)
-                    # if response is not None:
-                    #     if response.mid == request.mid:
-                    #         return response
-                    #     if response.type == defines.Types["NON"]:
-                    #         return response
-                    # else:
-                    #     return response
+                    response = self.queue.get(block=True, timeout=timeout)
+                    if response is not None:
+                        if response.token == request.token:
+                            return response
+                        if response.type == defines.Types["NON"]:
+                            return response
+                    else:
+                        return response
             except Empty:
                 #if timeout is set
                 response = None
